@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
+    <groupId>cn.ocoop.framework</groupId>
+    <artifactId>spring-boot-starter</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
+
+    <name>Shiro Spring Boot Stater Build</name>
+    <description>Shiro Spring Boot Stater Build</description>
+
+    <url>https://github.com/liolay/shiro-spring-boot-starter</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <tag>master</tag>
+        <url>https://github.com/liolay/shiro-spring-boot-starter</url>
+        <connection>scm:git:git://github.com/liolay/shiro-spring-boot-starter.git</connection>
+        <developerConnection>scm:git:ssh://github.com/liolay/shiro-spring-boot-starter.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>liolay</name>
+            <email>794075795@qq.com</email>
+            <organization>ocoop</organization>
+        </developer>
+    </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <modules>
+        <module>shiro-spring-boot-starter</module>
+        <module>shiro-spring-boot-autoconfigure</module>
+    </modules>
+
+</project>
