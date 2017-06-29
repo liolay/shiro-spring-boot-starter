@@ -1,4 +1,4 @@
-shiro-spring-boot-autoconfigure
+shiro-spring-boot-starter
 ===============================
 
 一、项目说明
