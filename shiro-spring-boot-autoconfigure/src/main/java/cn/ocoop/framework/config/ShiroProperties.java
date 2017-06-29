@@ -15,6 +15,15 @@ import java.util.stream.Collectors;
 public class ShiroProperties {
     public static final String PREFIX = "shiro";
     private List<RealmDefinition> realms = new ArrayList<>();
+    private RequestProperties requestProperties = new RequestProperties();
+
+    public RequestProperties getRequestProperties() {
+        return requestProperties;
+    }
+
+    public void setRequestProperties(RequestProperties requestProperties) {
+        this.requestProperties = requestProperties;
+    }
 
     public List<Realm> realms() {
         return realms.stream()

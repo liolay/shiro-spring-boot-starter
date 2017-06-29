@@ -1,11 +1,14 @@
 package cn.ocoop.framework.filter;
 
 
+import cn.ocoop.framework.config.RequestProperties;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.util.ClassUtils;
 import org.apache.shiro.web.filter.authc.AnonymousFilter;
 import org.apache.shiro.web.filter.session.NoSessionCreationFilter;
 
 import javax.servlet.Filter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -28,10 +31,12 @@ public enum DefaultFilter {
         this.filterClass = filterClass;
     }
 
-    public static Map<String, Filter> createInstanceMap() {
+    public static Map<String, Filter> createInstanceMap(RequestProperties requestProperties) throws InvocationTargetException, IllegalAccessException {
         Map<String, Filter> filters = new LinkedHashMap<>(values().length);
         for (DefaultFilter defaultFilter : values()) {
-            filters.put(defaultFilter.name(), defaultFilter.newInstance());
+            Filter filter = defaultFilter.newInstance();
+            BeanUtils.setProperty(filter, "requestProperties", requestProperties);
+            filters.put(defaultFilter.name(), filter);
         }
         return filters;
     }

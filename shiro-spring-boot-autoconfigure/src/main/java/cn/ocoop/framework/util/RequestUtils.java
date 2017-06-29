@@ -12,4 +12,8 @@ public class RequestUtils {
         return requestHeader != null && "XMLHttpRequest".equals(requestHeader);
     }
 
+    public static boolean shouldUseNormalHttpRequestToProcess(ServletRequest request, boolean serviceOriented) {
+        return !isAjaxRequest(request) && !serviceOriented;
+    }
+
 }

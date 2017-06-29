@@ -1,8 +1,8 @@
 package cn.ocoop.framework.filter;
 
+import cn.ocoop.framework.config.RequestProperties;
 import cn.ocoop.framework.util.RequestUtils;
 import cn.ocoop.framework.util.ResponseUtils;
-import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -17,18 +17,14 @@ import java.io.IOException;
 
 public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.FormAuthenticationFilter {
     private static final Logger log = LoggerFactory.getLogger(FormAuthenticationFilter.class);
-    private StatusCode statusCode;
+    private RequestProperties requestProperties;
 
-    public static void main(String[] args) {
-        System.out.println(JSON.toJSONString(Maps.immutableEntry("ok1", "ok2")));
+    public RequestProperties getRequestProperties() {
+        return requestProperties;
     }
 
-    public StatusCode getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(StatusCode statusCode) {
-        this.statusCode = statusCode;
+    public void setRequestProperties(RequestProperties requestProperties) {
+        this.requestProperties = requestProperties;
     }
 
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
@@ -50,20 +46,20 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
             if (log.isTraceEnabled()) {
                 log.trace("Attempting to access a path which requires authentication.  Forwarding to the Authentication url [" + this.getLoginUrl() + "]");
             }
-            if (RequestUtils.isAjaxRequest(request)) {
+            if (RequestUtils.shouldUseNormalHttpRequestToProcess(request, requestProperties.isServiceOriented())) {
                 this.saveRequestAndRedirectToLogin(request, response);
             } else {
-                ResponseUtils.responseInvalidLogin(response, statusCode.getInvalidLoginCode());
+                ResponseUtils.responseInvalidLogin(response, requestProperties.getInvalidLoginCode());
             }
             return false;
         }
     }
 
     protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
-        if (RequestUtils.isAjaxRequest(request)) {
+        if (RequestUtils.shouldUseNormalHttpRequestToProcess(request, requestProperties.isServiceOriented())) {
             this.issueSuccessRedirect(request, response);
         } else {
-            ResponseUtils.responseJson(response, HttpServletResponse.SC_OK, Maps.immutableEntry("success", true));
+            ResponseUtils.responseJson(response, HttpServletResponse.SC_OK, Maps.immutableEntry(requestProperties.getLogInOutResponseKey(), true));
         }
         return false;
     }
@@ -73,16 +69,17 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
             log.debug("Authentication exception", e);
         }
 
-        if (RequestUtils.isAjaxRequest(request)) {
-            try {
-                ResponseUtils.responseJson(response, HttpServletResponse.SC_OK, Maps.immutableEntry("success", false));
-            } catch (IOException e1) {
-                log.error("response login fail fails", e1);
-            }
-            return false;
+        if (RequestUtils.shouldUseNormalHttpRequestToProcess(request, requestProperties.isServiceOriented())) {
+            this.setFailureAttribute(request, e);
+            return true;
         }
 
-        this.setFailureAttribute(request, e);
-        return true;
+        try {
+            ResponseUtils.responseJson(response, HttpServletResponse.SC_OK, Maps.immutableEntry(requestProperties.getLogInOutResponseKey(), false));
+        } catch (IOException e1) {
+            log.error("response login fail fails", e1);
+        }
+        return false;
+
     }
 }

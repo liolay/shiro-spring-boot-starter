@@ -2,6 +2,7 @@ package cn.ocoop.framework;
 
 import cn.ocoop.framework.authz.ModularSourceRealmAuthorizer;
 import cn.ocoop.framework.cache.RedisCacheManager;
+import cn.ocoop.framework.config.RequestProperties;
 import cn.ocoop.framework.config.ShiroProperties;
 import cn.ocoop.framework.filter.DefaultFilter;
 import cn.ocoop.framework.session.RedisSessionDAO;
@@ -29,19 +30,23 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.servlet.Filter;
+import java.lang.reflect.InvocationTargetException;
 
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnBean(value = {RedisTemplate.class})
 @EnableConfigurationProperties({
-        ShiroProperties.class
+        ShiroProperties.class,
+        RequestProperties.class
 })
 @Import(ShiroConfiguration.class)
 public class ShiroAutoConfiguration {
     private final ShiroProperties shiroProperties;
+    private final RequestProperties requestProperties;
 
-    public ShiroAutoConfiguration(ShiroProperties shiroProperties) {
+    public ShiroAutoConfiguration(ShiroProperties shiroProperties, RequestProperties requestProperties) {
         this.shiroProperties = shiroProperties.afterPropertiesSet();
+        this.requestProperties = requestProperties;
     }
 
     @Bean
@@ -58,10 +63,10 @@ public class ShiroAutoConfiguration {
     @Bean
     @ConfigurationProperties(prefix = "shiro")
     @ConditionalOnMissingBean(ShiroFilterFactoryBean.class)
-    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
+    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) throws InvocationTargetException, IllegalAccessException {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        shiroFilterFactoryBean.setFilters(DefaultFilter.createInstanceMap());
+        shiroFilterFactoryBean.setFilters(DefaultFilter.createInstanceMap(requestProperties));
         return shiroFilterFactoryBean;
     }
 
@@ -125,6 +130,5 @@ public class ShiroAutoConfiguration {
     public AbstractAuthenticator authenticator() {
         return new ModularRealmAuthenticator();
     }
-
 
 }
