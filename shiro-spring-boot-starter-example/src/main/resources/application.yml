@@ -1,0 +1,64 @@
+#redis 配置
+spring:
+  redis:
+    database: 0
+    host: 127.0.0.1
+    password:
+    port: 6379
+    timeout: 100
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1
+        min-idle: 0
+
+# shiro配置
+shiro:
+  session:
+    sessionIdCookie:
+      name: session-id
+      path: /
+      max-age: -1
+    session-id-cookie-enabled: true
+    session-id-url-rewriting-enabled: true
+    global-session-timeout: 1800000
+    session-cache-name: "shiro:session:"
+
+  realms:
+    - realm:
+        target: cn.ocoop.demo.DemoRealm
+        property:
+          cachingEnabled: true
+          authenticationCachingEnabled: true
+          authorizationCachingEnabled: true
+          authenticationCacheName: DemoRealm:authenticationCache
+          authorizationCacheName: DemoRealm:authorizationCache
+        credentials-matcher:
+          target: org.apache.shiro.authc.credential.HashedCredentialsMatcher
+          property:
+            hashAlgorithmName: MD5
+            hashIterations: 2
+            storedCredentialsHexEncoded: true
+
+  remember-me:
+    cookie-cipher-key: T(org.apache.shiro.codec.Base64).decode('xVmmoltfpb8tTceuT5R7Bw==')
+    cookie:
+      name: remember-me
+      path: /
+      max-age: 31536000
+
+  login-url: /login
+  success-url: /index
+  unauthorized-url: /unauthorized
+  invalid-login-code: 418
+  invalid-permission-code: 401
+  service-oriented: false
+  log-in-out-response-key: success
+
+  #filters:
+  #  anon: org.apache.shiro.web.filter.authc.AnonymousFilter
+
+  filter-chain-definitions-map:
+    /a  : authc
+    /** : anon

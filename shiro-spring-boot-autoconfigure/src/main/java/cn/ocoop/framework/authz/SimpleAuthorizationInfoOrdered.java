@@ -4,24 +4,24 @@ package cn.ocoop.framework.authz;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.Permission;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 
 public class SimpleAuthorizationInfoOrdered implements AuthorizationInfo {
     /**
      * The internal roles collection.
      */
-    protected List<String> roles;
+    protected Collection<String> roles;
 
     /**
      * Collection of all string-based permissions associated with the account.
      */
-    protected List<String> stringPermissions;
+    protected Collection<String> stringPermissions;
 
     /**
      * Collection of all object-based permissions associaed with the account.
      */
-    protected List<Permission> objectPermissions;
+    protected Collection<Permission> objectPermissions;
 
     /**
      * Default no-argument constructor.
@@ -34,11 +34,11 @@ public class SimpleAuthorizationInfoOrdered implements AuthorizationInfo {
      *
      * @param roles the roles assigned to the realm account.
      */
-    public SimpleAuthorizationInfoOrdered(List<String> roles) {
+    public SimpleAuthorizationInfoOrdered(Collection<String> roles) {
         this.roles = roles;
     }
 
-    public List<String> getRoles() {
+    public Collection<String> getRoles() {
         return roles;
     }
 
@@ -47,7 +47,7 @@ public class SimpleAuthorizationInfoOrdered implements AuthorizationInfo {
      *
      * @param roles the roles assigned to the account.
      */
-    public void setRoles(List<String> roles) {
+    public void setRoles(Collection<String> roles) {
         this.roles = roles;
     }
 
@@ -59,7 +59,7 @@ public class SimpleAuthorizationInfoOrdered implements AuthorizationInfo {
      */
     public void addRole(String role) {
         if (this.roles == null) {
-            this.roles = new ArrayList<>();
+            this.roles = new LinkedHashSet<>();
         }
         this.roles.add(role);
     }
@@ -70,14 +70,14 @@ public class SimpleAuthorizationInfoOrdered implements AuthorizationInfo {
      *
      * @param roles the roles to add to those associated with the account.
      */
-    public void addRoles(List<String> roles) {
+    public void addRoles(Collection<String> roles) {
         if (this.roles == null) {
-            this.roles = new ArrayList<>();
+            this.roles = new LinkedHashSet<>();
         }
         this.roles.addAll(roles);
     }
 
-    public List<String> getStringPermissions() {
+    public Collection<String> getStringPermissions() {
         return stringPermissions;
     }
 
@@ -88,7 +88,7 @@ public class SimpleAuthorizationInfoOrdered implements AuthorizationInfo {
      *
      * @param stringPermissions the string-based permissions assigned directly to the account.
      */
-    public void setStringPermissions(List<String> stringPermissions) {
+    public void setStringPermissions(Collection<String> stringPermissions) {
         this.stringPermissions = stringPermissions;
     }
 
@@ -100,7 +100,7 @@ public class SimpleAuthorizationInfoOrdered implements AuthorizationInfo {
      */
     public void addStringPermission(String permission) {
         if (this.stringPermissions == null) {
-            this.stringPermissions = new ArrayList<>();
+            this.stringPermissions = new LinkedHashSet<>();
         }
         this.stringPermissions.add(permission);
     }
@@ -111,14 +111,14 @@ public class SimpleAuthorizationInfoOrdered implements AuthorizationInfo {
      *
      * @param permissions the permissions to add to those associated directly with the account.
      */
-    public void addStringPermissions(List<String> permissions) {
+    public void addStringPermissions(Collection<String> permissions) {
         if (this.stringPermissions == null) {
-            this.stringPermissions = new ArrayList<>();
+            this.stringPermissions = new LinkedHashSet<>();
         }
         this.stringPermissions.addAll(permissions);
     }
 
-    public List<Permission> getObjectPermissions() {
+    public Collection<Permission> getObjectPermissions() {
         return objectPermissions;
     }
 
@@ -129,7 +129,7 @@ public class SimpleAuthorizationInfoOrdered implements AuthorizationInfo {
      *
      * @param objectPermissions the object-based permissions assigned directly to the account.
      */
-    public void setObjectPermissions(List<Permission> objectPermissions) {
+    public void setObjectPermissions(Collection<Permission> objectPermissions) {
         this.objectPermissions = objectPermissions;
     }
 
@@ -141,7 +141,7 @@ public class SimpleAuthorizationInfoOrdered implements AuthorizationInfo {
      */
     public void addObjectPermission(Permission permission) {
         if (this.objectPermissions == null) {
-            this.objectPermissions = new ArrayList<>();
+            this.objectPermissions = new LinkedHashSet<>();
         }
         this.objectPermissions.add(permission);
     }
@@ -153,9 +153,9 @@ public class SimpleAuthorizationInfoOrdered implements AuthorizationInfo {
      *
      * @param permissions the permissions to add to those associated directly with the account.
      */
-    public void addObjectPermissions(List<Permission> permissions) {
+    public void addObjectPermissions(Collection<Permission> permissions) {
         if (this.objectPermissions == null) {
-            this.objectPermissions = new ArrayList<>();
+            this.objectPermissions = new LinkedHashSet<>();
         }
         this.objectPermissions.addAll(permissions);
     }

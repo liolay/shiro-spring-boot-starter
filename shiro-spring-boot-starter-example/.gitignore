@@ -1,0 +1,6 @@
+# Created by .gitignore support plugin (hsz.mobi)
+*.iml
+.idea
+target
+.DS_Store
+*.log
