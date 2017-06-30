@@ -207,3 +207,9 @@ shiro:
    当你开启这个配置项时`login-url`，`success-url`，`unauthorized-url`将变得没有任何意义，因为Shiro的Filter不会发生重定向，
    取而代之的是通过状态码及具体的内容来响应调用方。
    
+**9.关于注解**
+
+   有时，我们经常使用在springMVC的方法上使用Shiro提供的注解`RequiresPermissions.class`, `RequiresRoles.class`,
+   `RequiresUser.class`, `RequiresGuest.class`, `RequiresAuthentication.class`，这为我们开发提供了方便，但使用注解的同时，你应该知道的是
+   ，这些注解在检查权限是是基于aop的，并且格外需要注意的是这些注解在权限不匹配时会抛出`AuthorizationException`，在登录状态不匹配时会抛出`UnauthenticatedException`，
+   如果你正在开发web应用，可能这并不是理想的处理方式，你可以使用spring的`@RestControllerAdvice`，`@ControllerAdvice`，`@ExceptionHandler`等注解全局捕获这些异常并为这些异常设置一个全局的返回内容。

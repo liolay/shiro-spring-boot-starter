@@ -7,9 +7,6 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 public class ShiroConfiguration {
 
     @Bean
@@ -34,14 +31,5 @@ public class ShiroConfiguration {
         return authorizationAttributeSourceAdvisor;
     }
 
-    private void a() {
-        System.out.println("============");
-    }
-    public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        ShiroConfiguration con = new ShiroConfiguration();
-        Method method = ShiroConfiguration.class.getDeclaredMethod("a",null);
-        method.setAccessible(true);
-        method.invoke(con,null);
-    }
 
 }
