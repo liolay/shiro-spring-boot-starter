@@ -14,6 +14,15 @@ shiro-spring-boot-starter
    
 4. 项目提供了一个缓存管理`ShiroRealmCacheManager`，该类提供了清除用户认证缓存，权限缓存等静态方法，你可直接调用，这在用户权限和认证信息发生变更时很有用。
 
+使用：
+```
+    <dependency>
+        <groupId>cn.ocoop.framework</groupId>
+        <artifactId>shiro-spring-boot-starter</artifactId>
+        <version>1.0.1</version>
+    </dependency>
+```
+
 二、配置说明
 ----------
 **1.配置文件**
